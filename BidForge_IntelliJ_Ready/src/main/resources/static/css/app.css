@@ -1,0 +1,375 @@
+:root {
+    --bf-green: #198754;
+    --bf-green-dark: #146c43;
+    --bf-sidebar: #20262b;
+    --bf-bg: #f5f7f9;
+    --bf-border: #dee2e6;
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--bf-bg);
+    color: #212529;
+    font-size: .95rem;
+}
+
+.layout {
+    display: flex !important;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.sidebar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 1030;
+    flex: 0 0 250px;
+    width: 250px;
+    min-height: 100vh !important;
+    background: var(--bf-sidebar) !important;
+    padding: 1.25rem !important;
+}
+
+.sidebar .brand {
+    padding: .35rem .5rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+
+.sidebar .nav-link {
+    padding: .7rem .8rem;
+    color: rgba(255, 255, 255, .82) !important;
+}
+
+.sidebar .nav-link:hover, .sidebar .nav-link:focus {
+    background: rgba(255, 255, 255, .1);
+    color: #fff !important;
+}
+
+.sidebar .nav-link.active {
+    background: var(--bf-green);
+    color: #fff !important;
+}
+
+.main {
+    min-width: 0;
+    flex: 1 1 auto;
+    width: calc(100% - 250px);
+    background: var(--bf-bg);
+}
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    min-height: 64px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .04);
+}
+
+.page {
+    max-width: none !important;
+    padding: 2rem !important;
+}
+
+.page-heading {
+    margin-bottom: 1.5rem !important;
+}
+
+.page-title {
+    font-size: 1.65rem;
+    letter-spacing: -.01em;
+}
+
+.card {
+    border: 1px solid rgba(0, 0, 0, .06) !important;
+    border-radius: .75rem !important;
+}
+
+.card-body {
+    padding: 1.35rem !important;
+}
+
+.form-label {
+    margin-bottom: .45rem;
+    font-size: .88rem;
+}
+
+.form-control, .form-select {
+    min-height: 42px;
+    border-radius: .5rem;
+}
+
+textarea.form-control {
+    min-height: 100px;
+}
+
+.table-responsive {
+    border: 1px solid var(--bf-border);
+    border-radius: .65rem;
+}
+
+table.table {
+    margin-bottom: 0;
+}
+
+.table > thead > tr > th {
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    white-space: nowrap;
+    padding: .8rem .85rem;
+    background: #f8f9fa;
+}
+
+.table > tbody > tr > td {
+    padding: .8rem .85rem;
+    vertical-align: middle;
+}
+
+.table td, .table th {
+    border-color: #e3e7eb;
+}
+
+.table input.form-control {
+    min-width: 110px;
+}
+
+.btn {
+    border-radius: .5rem;
+    font-weight: 600;
+}
+
+.btn-success {
+    background: var(--bf-green);
+    border-color: var(--bf-green);
+}
+
+.btn-success:hover, .btn-success:focus {
+    background: var(--bf-green-dark);
+    border-color: var(--bf-green-dark);
+}
+
+.btn-primary {
+    background: var(--bf-green);
+    border-color: var(--bf-green);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background: var(--bf-green-dark);
+    border-color: var(--bf-green-dark);
+}
+
+.text-primary {
+    color: var(--bf-green) !important;
+}
+
+.bg-primary {
+    background-color: var(--bf-green) !important;
+}
+
+.border-primary {
+    border-color: var(--bf-green) !important;
+}
+
+.rfq-tabs {
+    gap: .35rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.rfq-tabs .nav-link {
+    color: #495057;
+    border: 1px solid transparent;
+    border-radius: .6rem .6rem 0 0;
+    padding: .75rem 1rem;
+    background: #f1f3f5;
+}
+
+.rfq-tabs .nav-link.active {
+    color: #fff;
+    background: var(--bf-green);
+    border-color: var(--bf-green);
+}
+
+.rfq-tabs .nav-link.active small {
+    color: rgba(255, 255, 255, .8) !important;
+}
+
+.rfq-tabs .badge {
+    background: #343a40 !important;
+}
+
+.rfq-tabs .nav-link.active .badge {
+    background: #fff !important;
+    color: var(--bf-green) !important;
+}
+
+.stat {
+    min-height: 120px;
+}
+
+.empty {
+    min-height: 80px;
+}
+
+.vendor-picker label {
+    cursor: pointer;
+    transition: .15s ease;
+}
+
+.vendor-picker label:hover {
+    border-color: var(--bf-green) !important;
+    background: #f3fbf6;
+}
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        flex-basis: 210px;
+        width: 210px;
+    }
+
+    .main {
+        width: calc(100% - 210px);
+    }
+
+    .page {
+        padding: 1.25rem !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .layout {
+        display: block !important;
+    }
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        min-height: auto !important;
+    }
+
+    .main {
+        width: 100%;
+    }
+
+    .topbar {
+        position: relative;
+    }
+
+    .page {
+        padding: 1rem !important;
+    }
+
+    .rfq-tabs {
+        overflow: auto;
+        flex-wrap: nowrap;
+    }
+
+    .rfq-tabs .nav-link {
+        min-width: 210px;
+    }
+}
+
+.table-toolbar {
+    padding: .25rem 0 .5rem;
+}
+
+.table-toolbar .search-box {
+    width: min(100%, 420px);
+}
+
+.table-toolbar .search-box .input-group-text {
+    background: #fff;
+    border-right: 0;
+}
+
+.table-toolbar .form-select, .table-toolbar select {
+    width: auto;
+    min-width: 85px;
+    display: inline-block;
+}
+
+.table-toolbar .entries-control {
+    margin: 0;
+    white-space: nowrap;
+    margin-left: auto;
+}
+
+.pagination[data-pagination] {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: .5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.pagination[data-pagination] .page-info {
+    color: #6c757d;
+    font-size: .875rem;
+    padding: 0 .35rem;
+}
+
+.pagination[data-pagination] .btn {
+    min-width: 82px;
+}
+
+.status-badge {
+    min-width: 78px;
+    text-align: center;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+@media (max-width: 767.98px) {
+    .table-toolbar .search-box {
+        width: 100%;
+    }
+
+    .table-toolbar .entries-control {
+        width: 100%;
+    }
+
+    .table-toolbar select {
+        width: 100%;
+    }
+}
+
+/* Table readability: keep vendor rows spacious and action/status cells compact. */
+.data-table-wrap, .table-responsive {
+    width: 100%;
+}
+
+.table {
+    width: 100%;
+}
+
+.table > tbody > tr {
+    min-height: 58px;
+}
+
+.table > tbody > tr > td {
+    white-space: nowrap;
+}
+
+.table > tbody > tr > td:nth-child(1) {
+    min-width: 150px;
+}
+
+.table > tbody > tr > td:nth-child(2) {
+    min-width: 170px;
+}
+
+.table > tbody > tr > td:nth-last-child(1), .action-cell {
+    min-width: 130px;
+}
+
+.invoice-cell {
+    min-width: 120px;
+}

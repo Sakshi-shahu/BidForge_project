@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${editMode ? 'Edit RFQ | BidForge' : 'Add RFQ | BidForge'}">Add RFQ | BidForge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div class="layout d-flex min-vh-100 bg-body-tertiary">
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+    <main class="main flex-grow-1 min-vh-100">
+        <div th:replace="~{fragments/layout :: topbar}"></div>
+        <section class="page container-fluid py-4">
+
+            <div class="page-heading d-flex justify-content-between align-items-start gap-3 mb-4">
+                <div>
+                    <div class="eyebrow">RFQ MANAGEMENT</div>
+                    <h1 class="page-title fw-bold mb-1" th:text="${editMode ? 'Edit RFQ' : 'Add RFQ'}">Add RFQ</h1>
+                    <p class="page-subtitle text-secondary mb-0">Create the RFQ in three simple steps.</p>
+                </div>
+            </div>
+
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+            <form method="post" action="/admin/rfq/save" th:object="${draft}" id="rfqForm">
+                <input type="hidden" th:field="*{rfqId}">
+
+                <!-- ================= STEP TABS ================= -->
+                <div class="rfq-tabs nav nav-tabs mb-4" role="tablist">
+                    <button type="button" class="rfq-tab nav-link active" data-step="1">
+                        <span class="badge text-bg-dark me-2">1</span>
+                        <span><strong>RFQ BID DETAILS</strong><small class="d-block text-secondary">Basic RFQ information</small></span>
+                    </button>
+                    <button type="button" class="rfq-tab nav-link" data-step="2">
+                        <span class="badge text-bg-dark me-2">2</span>
+                        <span><strong>BID ITEMS</strong><small class="d-block text-secondary">Add item lines</small></span>
+                    </button>
+                    <button type="button" class="rfq-tab nav-link" data-step="3">
+                        <span class="badge text-bg-dark me-2">3</span>
+                        <span><strong>DURATION AND VENDORS</strong><small class="d-block text-secondary">Dates and vendors</small></span>
+                    </button>
+                </div>
+
+                <!-- ================= STEP 1 ================= -->
+                <section class="rfq-step-panel active" data-panel="1">
+                    <div class="card shadow-sm border-0 p-4">
+                        <div class="section-title fw-bold fs-5 mb-3">RFQ BID DETAILS</div>
+                        <div class="grid grid-2 row row-cols-1 row-cols-md-2 g-3">
+                            <div class="field mb-3">
+                                <label class="form-label fw-semibold">RFQ No</label>
+                                <input th:field="*{rfqNo}" readonly class="form-control">
+                            </div>
+                            <div class="field mb-3">
+                                <label class="form-label fw-semibold">Indent No</label>
+                                <input th:field="*{indentNo}" readonly class="form-control">
+                            </div>
+                            <div class="field mb-3">
+                                <label class="form-label fw-semibold">Mobile No</label>
+                                <input th:field="*{mobile}" placeholder="Enter mobile number" required class="form-control">
+                            </div>
+                            <div class="field mb-3">
+                                <label class="form-label fw-semibold">Contact Person</label>
+                                <input th:field="*{contactPerson}" placeholder="Enter contact person" required class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rfq-navigation d-flex justify-content-between align-items-center gap-2 mt-4">
+                        <span></span>
+                        <button type="button" class="btn btn-success next-step">Next</button>
+                    </div>
+                </section>
+
+                <!-- ================= STEP 2 ================= -->
+                <section class="rfq-step-panel d-none" data-panel="2">
+                    <div class="card shadow-sm border-0 p-4">
+                        <div class="section-title fw-bold fs-5 mb-3">BID ITEMS</div>
+
+                        <div class="rfq-item-form border rounded p-3 bg-body-tertiary">
+                            <div class="grid grid-4 row row-cols-1 row-cols-md-4 g-3">
+                                <div class="field mb-3">
+                                    <label class="form-label fw-semibold">Line No</label>
+                                    <input id="newLineNo" readonly value="1" class="form-control">
+                                </div>
+                                <div class="field mb-3">
+                                    <label class="form-label fw-semibold">Item No</label>
+                                    <input id="newItemNo" readonly value="1" class="form-control">
+                                </div>
+                                <div class="field mb-3">
+                                    <label class="form-label fw-semibold">Item Name</label>
+                                    <input id="newItemName" placeholder="Item name" class="form-control">
+                                </div>
+                                <div class="field mb-3">
+                                    <label class="form-label fw-semibold">Required Quantity</label>
+                                    <input id="newQuantity" type="number" min="1" placeholder="Quantity" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-4 row row-cols-1 row-cols-md-4 g-3">
+                                <div class="field mb-3">
+                                    <label class="form-label fw-semibold">UOM</label>
+                                    <input id="newUom" placeholder="Nos / Kg / Set" class="form-control">
+                                </div>
+                                <div class="field mb-3">
+                                    <label class="form-label fw-semibold">Delivery Date</label>
+                                    <input id="newDeliveryDate" type="date" class="form-control">
+                                </div>
+                                <div class="field mb-3">
+                                    <label class="form-label fw-semibold">Delivery Location</label>
+                                    <input id="newLocation" placeholder="Delivery location" class="form-control">
+                                </div>
+                                <div class="field mb-3">
+                                    <label class="form-label fw-semibold">Factory Code</label>
+                                    <input id="newFactoryCode" placeholder="Factory code" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="field mb-3">
+                                <label class="form-label fw-semibold">Description</label>
+                                <textarea id="newDescription" placeholder="Required specifications / description" class="form-control"></textarea>
+                            </div>
+
+                            <div class="item-add-row d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3">
+                                <span class="muted text-secondary small">Add each item line below before moving to the next step.</span>
+                                <button type="button" class="btn btn-success" id="addItem">Add Item</button>
+                            </div>
+                        </div>
+
+                        <div class="table-wrap table-responsive border rounded mt-4">
+                            <table class="compact-table table table-hover align-middle mb-0">
+                                <thead>
+                                <tr>
+                                    <th>Line No</th>
+                                    <th>Item No</th>
+                                    <th>Item Name</th>
+                                    <th>Qty</th>
+                                    <th>UOM</th>
+                                    <th>Delivery Date</th>
+                                    <th>Location</th>
+                                    <th>Factory</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody id="itemsBody">
+                                <tr th:each="item, stat : ${draft.items}" class="item-row">
+                                    <td><input th:name="'items[' + ${stat.index} + '].lineNo'" th:value="${stat.index + 1}" class="line-no form-control" readonly></td>
+                                    <td><input th:name="'items[' + ${stat.index} + '].itemNo'" th:value="${stat.index + 1}" class="item-no form-control" readonly></td>
+                                    <td><input th:name="'items[' + ${stat.index} + '].itemName'" th:value="${item.itemName}" required class="form-control"></td>
+                                    <td><input type="number" min="1" th:name="'items[' + ${stat.index} + '].requiredQuantity'" th:value="${item.requiredQuantity}" required class="form-control"></td>
+                                    <td><input th:name="'items[' + ${stat.index} + '].uom'" th:value="${item.uom}" required class="form-control"></td>
+                                    <td><input type="date" th:name="'items[' + ${stat.index} + '].deliveryDate'" th:value="${item.deliveryDate}" required class="form-control"></td>
+                                    <td><input th:name="'items[' + ${stat.index} + '].deliveryLocation'" th:value="${item.deliveryLocation}" required class="form-control"></td>
+                                    <td><input th:name="'items[' + ${stat.index} + '].factoryCode'" th:value="${item.factoryCode}" class="form-control"></td>
+                                    <td><input th:name="'items[' + ${stat.index} + '].description'" th:value="${item.description}" class="form-control"></td>
+                                    <td><button type="button" class="btn btn-danger btn-sm remove-item">Remove</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="noItems" class="empty text-center text-secondary py-4">No items added.</div>
+                    </div>
+
+                    <div class="rfq-navigation d-flex justify-content-between align-items-center gap-2 mt-4">
+                        <button type="button" class="btn btn-light previous-step">Previous</button>
+                        <button type="button" class="btn btn-success next-step">Next</button>
+                    </div>
+                </section>
+
+                <!-- ================= STEP 3 ================= -->
+                <section class="rfq-step-panel d-none" data-panel="3">
+                    <div class="card shadow-sm border-0 p-4">
+                        <div class="section-title fw-bold fs-5 mb-3">DURATION AND VENDORS</div>
+                        <div class="grid grid-2 row row-cols-1 row-cols-md-2 g-3">
+                            <div class="field mb-3">
+                                <label class="form-label fw-semibold">Bid Start Date</label>
+                                <input type="date" th:field="*{bidStartDate}" required class="form-control">
+                            </div>
+                            <div class="field mb-3">
+                                <label class="form-label fw-semibold">Bid End Date</label>
+                                <input type="date" th:field="*{bidEndDate}" required class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="section-title fw-bold fs-5 mb-3 mt-3">Select Vendors</div>
+                        <div class="vendor-picker row row-cols-1 row-cols-md-2 g-3">
+                            <label class="col form-check border rounded p-3" th:each="vendor : ${vendors}">
+                                <input type="checkbox" name="vendorIds" th:value="${vendor.userId}"
+                                       th:checked="${draft.vendorIds != null and #lists.contains(draft.vendorIds, vendor.userId)}" class="form-check-input">
+                                <span>
+                                    <strong th:text="${vendor.fullName}"></strong>
+                                    <small th:text="${vendor.email}"></small>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="rfq-navigation d-flex justify-content-between align-items-center gap-2 mt-4">
+                        <button type="button" class="btn btn-light previous-step">Previous</button>
+                        <div class="actions d-flex flex-wrap gap-2">
+                            <a class="btn btn-light" href="/admin/rfqs">Cancel</a>
+                            <button class="btn btn-secondary" name="action" value="DRAFT" type="submit">Save Draft</button>
+                            <button class="btn btn-success" name="action" value="PUBLISH" type="submit">Submit RFQ</button>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </section>
+    </main>
+</div>
+
+<script>
+(function () {
+    const panels = [...document.querySelectorAll('.rfq-step-panel')];
+    const tabs = [...document.querySelectorAll('.rfq-tab')];
+    const body = document.getElementById('itemsBody');
+    const noItems = document.getElementById('noItems');
+    const form = document.getElementById('rfqForm');
+    let index = body.querySelectorAll('.item-row').length;
+    let currentStep = 1;
+
+    function renumber() {
+        [...body.querySelectorAll('.item-row')].forEach((row, i) => {
+            const line = row.querySelector('.line-no');
+            const itemNo = row.querySelector('.item-no');
+            if (line) line.value = i + 1;
+            if (itemNo) itemNo.value = i + 1;
+            row.querySelectorAll('[name]').forEach(input => {
+                const dot = input.name.indexOf('.');
+                const field = dot >= 0 ? input.name.substring(dot + 1) : input.name;
+                input.name = 'items[' + i + '].' + field;
+            });
+        });
+        noItems.style.display = body.querySelector('.item-row') ? 'none' : 'block';
+        index = body.querySelectorAll('.item-row').length;
+    }
+
+    function showStep(step) {
+        currentStep = step;
+        panels.forEach(panel => { const isActive = Number(panel.dataset.panel) === step; panel.classList.toggle('d-none', !isActive); panel.classList.toggle('active', isActive); });
+        tabs.forEach(tab => {
+            const n = Number(tab.dataset.step);
+            tab.classList.toggle('active', n === step);
+            tab.classList.toggle('completed', n < step);
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function validateStep(step) {
+        const panel = document.querySelector('[data-panel="' + step + '"]');
+        if (!panel) return true;
+        const fields = [...panel.querySelectorAll('input[required], select[required], textarea[required]')];
+        for (const field of fields) {
+            if (!field.checkValidity()) {
+                field.reportValidity();
+                field.focus();
+                return false;
+            }
+        }
+        if (step === 2 && body.querySelectorAll('.item-row').length === 0) {
+            alert('Please add at least one bid item.');
+            return false;
+        }
+        return true;
+    }
+
+    function addRow() {
+        const values = {
+            lineNo: index + 1,
+            itemNo: index + 1, 
+            itemName: document.getElementById('newItemName').value.trim(),
+            requiredQuantity: document.getElementById('newQuantity').value,
+            uom: document.getElementById('newUom').value.trim(),
+            deliveryDate: document.getElementById('newDeliveryDate').value,
+            deliveryLocation: document.getElementById('newLocation').value.trim(),
+            factoryCode: document.getElementById('newFactoryCode').value.trim(),
+            description: document.getElementById('newDescription').value.trim()
+        };
+
+        if (!values.itemName || !values.requiredQuantity || !values.uom || !values.deliveryDate || !values.deliveryLocation) {
+            alert('Please fill Item Name, Required Quantity, UOM, Delivery Date and Delivery Location.');
+            return;
+        }
+
+        const row = document.createElement('tr');
+        row.className = 'item-row';
+        const i = index;
+        row.innerHTML = `
+            <td><input name="items[${i}].lineNo" class="line-no form-control" value="${values.lineNo}" readonly></td>
+            <td><input name="items[${i}].itemNo" class="item-no form-control" value="${values.itemNo}" readonly></td>
+            <td><input class="form-control" name="items[${i}].itemName" value="${escapeHtml(values.itemName)}" required></td>
+            <td><input class="form-control" type="number" min="1" name="items[${i}].requiredQuantity" value="${escapeHtml(values.requiredQuantity)}" required></td>
+            <td><input class="form-control" name="items[${i}].uom" value="${escapeHtml(values.uom)}" required></td>
+            <td><input class="form-control" type="date" name="items[${i}].deliveryDate" value="${escapeHtml(values.deliveryDate)}" required></td>
+            <td><input class="form-control" name="items[${i}].deliveryLocation" value="${escapeHtml(values.deliveryLocation)}" required></td>
+            <td><input class="form-control" name="items[${i}].factoryCode" value="${escapeHtml(values.factoryCode)}"></td>
+            <td><input class="form-control" name="items[${i}].description" value="${escapeHtml(values.description)}"></td>
+            <td><button type="button" class="btn btn-danger btn-sm remove-item">Remove</button></td>`;
+        body.appendChild(row);
+        clearItemInputs();
+        renumber();
+    }
+
+    function clearItemInputs() {
+        ['newItemName','newQuantity','newUom','newDeliveryDate','newLocation','newFactoryCode','newDescription']
+            .forEach(id => document.getElementById(id).value = '');
+    }
+
+    function escapeHtml(value) {
+        return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+
+    document.getElementById('addItem').addEventListener('click', addRow);
+
+    body.addEventListener('click', function (event) {
+        if (!event.target.classList.contains('remove-item')) return;
+        event.target.closest('.item-row').remove();
+        renumber();
+    });
+
+    document.querySelectorAll('.next-step').forEach(button => {
+        button.addEventListener('click', function () {
+            if (validateStep(currentStep) && currentStep < 3) showStep(currentStep + 1);
+        });
+    });
+
+    document.querySelectorAll('.previous-step').forEach(button => {
+        button.addEventListener('click', function () {
+            if (currentStep > 1) showStep(currentStep - 1);
+        });
+    });
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function () {
+            const target = Number(tab.dataset.step);
+            if (target > currentStep) {
+                let ok = true;
+                for (let s = currentStep; s < target; s++) {
+                    if (!validateStep(s)) { ok = false; break; }
+                }
+                if (!ok) return;
+            }
+            showStep(target);
+        });
+    });
+
+    form.addEventListener('submit', function (event) {
+        if (!validateStep(1) || !validateStep(2) || !validateStep(3)) {
+            event.preventDefault();
+            if (!validateStep(1)) showStep(1);
+            else if (!validateStep(2)) showStep(2);
+            else showStep(3);
+        }
+    });
+
+    renumber();
+    showStep(1);
+})();
+</script>
+</body>
+</html>

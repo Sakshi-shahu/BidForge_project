@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RFQ Details | BidForge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div class="layout d-flex min-vh-100">
+    <div th:replace="~{fragments/layout :: sidebar}"></div>
+    <main class="main flex-grow-1 min-vh-100">
+        <div th:replace="~{fragments/layout :: topbar}"></div>
+        <section class="page container-fluid py-4">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div><div class="text-success small fw-bold">RFQ</div><h1 class="h3 mb-1" th:text="${rfq.rfqNo}"></h1>
+                    <div class="text-secondary">Closing: <strong th:text="${rfq.expiryDateOfBid == null ? '-' : #temporals.format(rfq.expiryDateOfBid,'dd-MM-yyyy HH:mm')}"></strong></div></div>
+                <span class="badge rounded-pill text-bg-success" th:text="${rfq.status}"></span>
+            </div>
+
+            <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+            <div class="d-flex gap-2 mb-3">
+                <a class="btn btn-outline-secondary btn-sm" th:href="@{'/vendor/rfq/' + ${rfq.rfqId} + '/history'}">View RFQ History</a>
+                <a class="btn btn-outline-dark btn-sm" href="/vendor/quotations">My Submissions</a>
+            </div>
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Bid Requirements</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4"><div class="text-secondary small">Contact</div><strong th:text="${rfq.contactPerson}"></strong></div>
+                        <div class="col-md-4"><div class="text-secondary small">Mobile</div><strong th:text="${rfq.mobile}"></strong></div>
+                        <div class="col-md-4"><div class="text-secondary small">Items</div><strong th:text="${#lists.size(rfq.items)}"></strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0" th:if="${canEdit}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div><h5 class="card-title mb-1" th:text="${quotation == null ? 'Prepare Quotation' : 'Update / Resubmit Quotation'}"></h5>
+                            <div class="text-secondary small">GST is fixed at 10%. You can update this quotation until Admin approves it or the RFQ is closed.</div></div>
+                        <span th:if="${quotation != null}" class="badge text-bg-warning" th:text="${quotation.status}"></span>
+                    </div>
+
+                    <form method="post" th:action="@{'/vendor/rfq/' + ${rfq.rfqId} + '/quote'}">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle">
+                                <thead class="table-light"><tr>
+                                    <th>Item</th><th>Factory</th><th>Qty</th><th>UOM</th><th>Required Delivery</th><th>Location</th>
+                                    <th>Unit Price</th><th>Base Amount</th><th>GST</th><th>GST Amount</th><th>Total</th>
+                                </tr></thead>
+                                <tbody>
+                                <tr th:each="item,stat : ${rfq.items}" class="quote-row" th:attr="data-qty=${item.reqQty}">
+                                    <td><input type="hidden" name="itemIds" th:value="${item.itemId}"><strong th:text="${item.itemName}"></strong><small class="d-block text-secondary" th:text="${item.itemNo}"></small></td>
+                                    <td th:text="${item.factoryCode == null ? '-' : item.factoryCode}"></td>
+                                    <td th:text="${item.reqQty}"></td><td th:text="${item.uom}"></td>
+                                    <td th:text="${item.reqDeliveryDate == null ? '-' : #temporals.format(item.reqDeliveryDate,'dd-MM-yyyy')}"></td>
+                                    <td th:text="${item.deliveryLocation}"></td>
+                                    <td><input class="form-control form-control-sm unit" type="number" name="unitPrices" min="0.01" step="0.01" required
+                                               th:value="${existingPrices[item.itemId]}"></td>
+                                    <td class="base-amount">₹0.00</td>
+                                    <td><span class="badge text-bg-secondary">10%</span><input type="hidden" name="gstPercents" value="10"></td>
+                                    <td class="gst-amount">₹0.00</td><td class="line-total fw-bold">₹0.00</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-4"><label class="form-label">Payment Terms</label><input class="form-control" name="paymentTerms" th:value="${quotation == null ? '' : quotation.paymentTerms}"></div>
+                            <div class="col-md-4"><label class="form-label">Quotation Total</label><input id="grandTotal" class="form-control" readonly value="₹0.00"></div>
+                            <div class="col-md-4"><label class="form-label">Bid No</label><input class="form-control" readonly th:value="${quotation == null ? '-' : quotation.bidNo}"></div>
+                        </div>
+                        <div class="row g-3 mt-1">
+                            <div class="col-md-4"><div class="text-secondary small">Subtotal</div><strong id="subTotal">₹0.00</strong></div>
+                            <div class="col-md-4"><div class="text-secondary small">GST @ 10%</div><strong id="gstTotal">₹0.00</strong></div>
+                            <div class="col-md-4"><div class="text-secondary small">Final Amount</div><strong id="finalTotal">₹0.00</strong></div>
+                        </div>
+                        <div class="mt-3"><label class="form-label">Remarks</label><textarea class="form-control" name="remarks" rows="3" th:text="${quotation == null ? '' : quotation.remarks}"></textarea></div>
+                        <div class="d-flex gap-2 mt-3">
+                            <button class="btn btn-success" name="submit" value="true" type="submit">Submit / Resubmit Quotation</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div th:if="${!canEdit}" class="alert alert-secondary mt-4">
+                <strong th:if="${quotation != null and quotation.status == 'APPROVED'}">This quotation is approved and can no longer be edited.</strong>
+                <strong th:if="${quotation == null or quotation.status != 'APPROVED'}">This RFQ is closed or not currently available for bidding.</strong>
+            </div>
+        </section>
+    </main>
+</div>
+<script>
+(function(){
+  const money=v=>'₹'+Number(v||0).toFixed(2);
+  function recalc(){let sub=0,gst=0,total=0;document.querySelectorAll('.quote-row').forEach(r=>{const q=Number(r.dataset.qty)||0,u=Number(r.querySelector('.unit').value)||0,b=q*u,g=b*.10,t=b+g;r.querySelector('.base-amount').textContent=money(b);r.querySelector('.gst-amount').textContent=money(g);r.querySelector('.line-total').textContent=money(t);sub+=b;gst+=g;total+=t;});document.getElementById('subTotal').textContent=money(sub);document.getElementById('gstTotal').textContent=money(gst);document.getElementById('finalTotal').textContent=money(total);document.getElementById('grandTotal').value=money(total)}
+  document.querySelectorAll('.unit').forEach(i=>i.addEventListener('input',recalc)); recalc();
+})();
+</script>
+</body></html>
