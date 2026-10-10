@@ -1,8 +1,7 @@
 package com.bidforge.rfq.serviceimpl;
 
-import org.springframework.stereotype.Service;
-
 import com.bidforge.rfq.service.EmailOtpService;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -34,7 +33,7 @@ public class EmailOtpServiceImpl implements EmailOtpService {
       return HexFormat.of().formatHex(hash);
 
         } catch (Exception exception) {
-            throw new IllegalStateException("Could not create email OTP hashs",exception);
+            throw new IllegalStateException("Could not create email OTP hash",exception);
         }
     }
 }

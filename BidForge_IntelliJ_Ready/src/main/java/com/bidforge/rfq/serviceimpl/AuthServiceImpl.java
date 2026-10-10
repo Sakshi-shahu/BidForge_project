@@ -1,27 +1,16 @@
 package com.bidforge.rfq.serviceimpl;
 
-import com.bidforge.rfq.dto.LoginRequest;
-import com.bidforge.rfq.dto.LoginResponse;
-import com.bidforge.rfq.dto.OtpRequest;
-import com.bidforge.rfq.dto.QrSetupResponse;
-import com.bidforge.rfq.dto.VerifyLoginOtpRequest;
+import com.bidforge.rfq.dto.*;
 import com.bidforge.rfq.entity.User;
 import com.bidforge.rfq.exception.InvalidCredentialsException;
 import com.bidforge.rfq.exception.InvalidOtpException;
 import com.bidforge.rfq.exception.InvalidTokenException;
 import com.bidforge.rfq.exception.UserNotFoundException;
+import com.bidforge.rfq.repository.UserRepository;
+import com.bidforge.rfq.service.*;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import com.bidforge.rfq.repository.UserRepository;
-import com.bidforge.rfq.service.AuthService;
-import com.bidforge.rfq.service.EmailOtpService;
-import com.bidforge.rfq.service.EmailService;
-import com.bidforge.rfq.service.JwtService;
-import com.bidforge.rfq.service.QrCodeService;
-import com.bidforge.rfq.service.RefreshTokenService;
-import com.bidforge.rfq.service.TwoFactorService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,7 +66,7 @@ public class AuthServiceImpl implements AuthService {
 
         String normalizedEmail = email.trim().toLowerCase();
         if (userRepository.findByEmailIgnoreCase(normalizedEmail).isPresent()) {
-            throw new IllegalArgumentException("Email is already registereds");
+            throw new IllegalArgumentException("Email is already registered");
         }
 
         String prefix = vendorName.substring(0, 3);
@@ -103,7 +92,7 @@ public class AuthServiceImpl implements AuthService {
         } catch (RuntimeException ex) {
             userRepository.delete(saved);
             throw new IllegalStateException(
-                    "Vendor was created but credential email could not be sents", ex);
+                    "Vendor was created but credential email could not be sent", ex);
         }
 
         log.info("Vendor account created for {}. Temporary credentials sent by email.",

@@ -1,8 +1,7 @@
 package com.bidforge.rfq.serviceimpl;
 
-import org.springframework.stereotype.Service;
-
 import com.bidforge.rfq.service.TwoFactorService;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -53,7 +52,7 @@ public class TwoFactorServiceImpl implements TwoFactorService {
             byte[] key = decodeBase32(secret);
    byte[] data = ByteBuffer .allocate(8) .putLong(counter).array();
 
-            Mac mac = Mac.getInstance("HmacSHA1s");
+            Mac mac = Mac.getInstance("HmacSHA1");
             mac.init(new SecretKeySpec(key, "HmacSHA1"));
 
             byte[] hash = mac.doFinal(data);

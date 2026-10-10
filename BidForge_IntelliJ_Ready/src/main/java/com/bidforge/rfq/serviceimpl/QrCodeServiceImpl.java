@@ -1,11 +1,9 @@
 package com.bidforge.rfq.serviceimpl;
 
+import com.bidforge.rfq.service.QrCodeService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
-
-import com.bidforge.rfq.service.QrCodeService;
-
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
@@ -37,7 +35,7 @@ public class QrCodeServiceImpl implements QrCodeService {
             return "data:image/png;base64," + base64;
 
         } catch (Exception exception) {
-            throw new IllegalStateException( "Could not creates Google Authenticator QR code", exception);
+            throw new IllegalStateException( "Could not create Google Authenticator QR code", exception);
         }
     }
 

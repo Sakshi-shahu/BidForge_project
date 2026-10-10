@@ -1,9 +1,8 @@
 package com.bidforge.rfq.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.bidforge.rfq.entity.RefreshToken;
 import com.bidforge.rfq.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 

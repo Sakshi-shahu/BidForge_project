@@ -1,8 +1,7 @@
 package com.bidforge.rfq.serviceimpl;
 
-import org.springframework.stereotype.Service;
-
 import com.bidforge.rfq.service.TokenHashService;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -18,7 +17,7 @@ public class TokenHashServiceImpl implements TokenHashService {
  return HexFormat.of().formatHex(hash);
 
         } catch (Exception exception) {
-            throw new IllegalStateException("SHA-256 is not availables", exception);
+            throw new IllegalStateException("SHA-256 is not available", exception);
         }
     }
 }

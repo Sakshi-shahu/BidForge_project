@@ -1,20 +1,18 @@
 package com.bidforge.rfq.serviceimpl;
 
+import com.bidforge.rfq.entity.User;
+import com.bidforge.rfq.exception.InvalidTokenException;
+import com.bidforge.rfq.exception.TokenExpiredException;
+import com.bidforge.rfq.service.JwtService;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import com.bidforge.rfq.service.JwtService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import com.bidforge.rfq.entity.User;
-import com.bidforge.rfq.exception.InvalidTokenException;
-import com.bidforge.rfq.exception.TokenExpiredException;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -84,7 +82,7 @@ public class JwtServiceImpl implements JwtService {
             throw new TokenExpiredException("Token has expired");
 
         } catch (JwtException | IllegalArgumentException exception) {
-            throw new InvalidTokenException("Invalid tokens");
+            throw new InvalidTokenException("Invalid token");
         }
     }
 

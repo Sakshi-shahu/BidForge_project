@@ -1,7 +1,6 @@
 package com.bidforge.rfq.entity;
 
 import jakarta.persistence.*;
-import com.bidforge.rfq.entity.User;
 import lombok.*;
 
 import java.time.Instant;

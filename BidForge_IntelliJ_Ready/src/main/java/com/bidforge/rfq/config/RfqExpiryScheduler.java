@@ -1,10 +1,10 @@
 package com.bidforge.rfq.config;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.bidforge.rfq.entity.Rfq;
 import com.bidforge.rfq.entity.RfqHistory;
 import com.bidforge.rfq.repository.RfqHistoryRepository;
 import com.bidforge.rfq.repository.RfqRepository;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

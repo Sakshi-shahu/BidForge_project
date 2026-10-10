@@ -1,17 +1,16 @@
 package com.bidforge.rfq.serviceimpl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.bidforge.rfq.entity.RefreshToken;
 import com.bidforge.rfq.entity.User;
 import com.bidforge.rfq.repository.RefreshTokenRepository;
 import com.bidforge.rfq.service.JwtService;
 import com.bidforge.rfq.service.RefreshTokenService;
 import com.bidforge.rfq.service.TokenHashService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 
@@ -53,7 +52,7 @@ entity.setTokenVersion(user.getTokenVersion());
 entity.setExpiresAt(Instant.now().plusMillis(refreshTokenExpiration));
 
         refreshTokenRepository.save(entity);
-        log.info("Refresh token stored only in DBs for user: {}", user.getEmail());
+        log.info("Refresh token stored only in DB for user: {}", user.getEmail());
     }
 
     @Override

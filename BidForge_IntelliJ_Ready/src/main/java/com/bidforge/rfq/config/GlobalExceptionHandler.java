@@ -1,21 +1,15 @@
 package com.bidforge.rfq.config;
 
+import com.bidforge.rfq.dto.ApiResponse;
+import com.bidforge.rfq.exception.*;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-
-import com.bidforge.rfq.dto.ApiResponse;
-import com.bidforge.rfq.exception.AuthenticationException;
-import com.bidforge.rfq.exception.InvalidCredentialsException;
-import com.bidforge.rfq.exception.InvalidOtpException;
-import com.bidforge.rfq.exception.InvalidTokenException;
-import com.bidforge.rfq.exception.TokenExpiredException;
-import com.bidforge.rfq.exception.UserNotFoundException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @ControllerAdvice

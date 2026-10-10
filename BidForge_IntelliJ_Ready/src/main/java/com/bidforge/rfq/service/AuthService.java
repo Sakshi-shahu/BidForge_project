@@ -1,10 +1,6 @@
 package com.bidforge.rfq.service;
 
-import com.bidforge.rfq.dto.LoginRequest;
-import com.bidforge.rfq.dto.LoginResponse;
-import com.bidforge.rfq.dto.OtpRequest;
-import com.bidforge.rfq.dto.QrSetupResponse;
-import com.bidforge.rfq.dto.VerifyLoginOtpRequest;
+import com.bidforge.rfq.dto.*;
 import com.bidforge.rfq.entity.User;
 import jakarta.servlet.http.HttpServletResponse;
 
