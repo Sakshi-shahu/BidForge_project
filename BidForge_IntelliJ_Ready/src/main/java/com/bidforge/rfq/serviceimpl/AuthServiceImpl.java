@@ -103,7 +103,7 @@ public class AuthServiceImpl implements AuthService {
         } catch (RuntimeException ex) {
             userRepository.delete(saved);
             throw new IllegalStateException(
-                    "Vendor was created but credential email could not be sent", ex);
+                    "Vendor was created but credential email could not be sents", ex);
         }
 
         log.info("Vendor account created for {}. Temporary credentials sent by email.",
