@@ -84,7 +84,7 @@ public class JwtServiceImpl implements JwtService {
             throw new TokenExpiredException("Token has expired");
 
         } catch (JwtException | IllegalArgumentException exception) {
-            throw new InvalidTokenException("Invalid token");
+            throw new InvalidTokenException("Invalid tokens");
         }
     }
 

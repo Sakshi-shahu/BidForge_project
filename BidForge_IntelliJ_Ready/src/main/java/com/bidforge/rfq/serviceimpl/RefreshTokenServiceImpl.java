@@ -53,7 +53,7 @@ entity.setTokenVersion(user.getTokenVersion());
 entity.setExpiresAt(Instant.now().plusMillis(refreshTokenExpiration));
 
         refreshTokenRepository.save(entity);
-        log.info("Refresh token stored only in DB for user: {}", user.getEmail());
+        log.info("Refresh token stored only in DBs for user: {}", user.getEmail());
     }
 
     @Override

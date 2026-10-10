@@ -53,7 +53,7 @@ public class TwoFactorServiceImpl implements TwoFactorService {
             byte[] key = decodeBase32(secret);
    byte[] data = ByteBuffer .allocate(8) .putLong(counter).array();
 
-            Mac mac = Mac.getInstance("HmacSHA1");
+            Mac mac = Mac.getInstance("HmacSHA1s");
             mac.init(new SecretKeySpec(key, "HmacSHA1"));
 
             byte[] hash = mac.doFinal(data);

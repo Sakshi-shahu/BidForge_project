@@ -37,7 +37,7 @@ public class QrCodeServiceImpl implements QrCodeService {
             return "data:image/png;base64," + base64;
 
         } catch (Exception exception) {
-            throw new IllegalStateException( "Could not create Google Authenticator QR code", exception);
+            throw new IllegalStateException( "Could not creates Google Authenticator QR code", exception);
         }
     }
 

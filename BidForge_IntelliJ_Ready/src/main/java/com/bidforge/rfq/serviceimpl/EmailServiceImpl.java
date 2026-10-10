@@ -26,7 +26,7 @@ public class EmailServiceImpl implements EmailService {
         message.setFrom(fromEmail);
         message.setTo(email);
         message.setSubject("Your BidForge verification OTP");
-        message.setText("Your OTP is " + otp + ". It expires in 5 minutes.");
+        message.setText("Your OTP is " + otp + ". It expires in 5 minute.");
         mailSender.send(message);
         log.info("OTP email sent to: {}", email);
     }

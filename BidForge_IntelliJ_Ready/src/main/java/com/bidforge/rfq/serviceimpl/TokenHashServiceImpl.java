@@ -18,7 +18,7 @@ public class TokenHashServiceImpl implements TokenHashService {
  return HexFormat.of().formatHex(hash);
 
         } catch (Exception exception) {
-            throw new IllegalStateException("SHA-256 is not available", exception);
+            throw new IllegalStateException("SHA-256 is not availables", exception);
         }
     }
 }

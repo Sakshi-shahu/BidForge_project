@@ -34,7 +34,7 @@ public class EmailOtpServiceImpl implements EmailOtpService {
       return HexFormat.of().formatHex(hash);
 
         } catch (Exception exception) {
-            throw new IllegalStateException("Could not create email OTP hash",exception);
+            throw new IllegalStateException("Could not create email OTP hashs",exception);
         }
     }
 }
