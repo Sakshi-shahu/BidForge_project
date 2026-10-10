@@ -77,7 +77,7 @@ public class AuthServiceImpl implements AuthService {
 
         String normalizedEmail = email.trim().toLowerCase();
         if (userRepository.findByEmailIgnoreCase(normalizedEmail).isPresent()) {
-            throw new IllegalArgumentException("Email is already registered");
+            throw new IllegalArgumentException("Email is already registereds");
         }
 
         String prefix = vendorName.substring(0, 3);
